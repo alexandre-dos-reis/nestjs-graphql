@@ -1,0 +1,25 @@
+---
+version: "3.7"
+services:
+  gql-postgres:
+    image: postgres:14
+    container_name: gql-postgres
+    restart: always
+    ports: 
+      - 5432:5432
+    env_file:
+      - db.env
+    volumes:
+      - ./docker-volumes/gql-postgres:/var/lib/postgresql/data
+  
+  gql-adminer:
+    container_name: gql-adminer
+    image: adminer
+    restart: always
+    environment: 
+      ADMINER_DESIGN: dracula
+      ADMINER_DEFAULT_SERVER: gql-postgres
+    depends_on: 
+      - gql-postgres
+    ports:
+      - 9999:8080
